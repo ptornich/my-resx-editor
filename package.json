@@ -1,0 +1,26 @@
+{
+  "name": "electronresxeditor",
+  "version": "1.0.0",
+  "description": "Edit .resx files with ease in any platform",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pedro Tornich",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^7.1.9"
+  },
+  "dependencies": {
+    "jQuery": "^1.7.4",
+    "jquery": "^3.4.1",
+    "jquery-ui-dist": "^1.12.1",
+    "jquery.tabulator": "^3.5.3",
+    "jsdom": "^16.0.0",
+    "path": "^0.12.7",
+    "tabulator": "^0.2.40",
+    "tabulator-tables": "^4.5.3",
+    "xml-formatter": "^1.2.0"
+  }
+}

@@ -1,0 +1,49 @@
+<div>
+    <label for="SelectFolder">
+        Select folder
+    </label>
+</div>
+<form class="form-inline">
+    <div>
+        <select class="form-control" id="SelectFolder">
+        </select>
+        <button type="button" class="btn btn-info" id="ManageFoldersButton">Manage folders</button>
+    </div>
+    <div class="alert alert-error" role="alert" id="error-alert" style="display: none;">
+        Unhandled exception. Please check the console log for more information.
+    </div>
+    <div class="alert alert-error" role="alert" id="no-resx-alert" style="display: none;">
+        No .resx files found in the selected folder.
+    </div>
+    <div class="alert" role="alert" id="designer-cs-alert" style="display: none;">
+        <br/>
+        <strong>
+            IMPORTANT:<br/>
+            We reformatted your .resx files.<br/>
+            So if you have any troubles with your .Designer.cs files, please recreate them.<br/>
+            To regenerate the files go to Visual Studio, then in each .resx file<br/>
+            change something and save the file, VS will recreate the .Designer.cs files for you.
+        </strong>
+    </div>
+</form>
+<br/>
+<div id="ResxGroup">
+    <form id="NewRecordForm" class="form"></form>
+    <div class="alert alert-error" role="alert" id="empty-key-alert" style="display: none;">
+        Key field cannot be empty.
+    </div>
+    <div class="alert alert-error" role="alert" id="dup-key-alert" style="display: none;">
+        Duplicate keys are not allowed.
+    </div>
+    <br/>
+    <form class="form-inline">
+        <button type="button" class="btn btn-success btn-left" id="SaveButton" disabled>Save</button>
+        <button type="button" class="btn btn-danger btn-left" id="DiscardButton" disabled>Discard</button>
+        <small id="SaveGroupTxt">You have no pending changes.</small>
+    </form>
+    <br/>
+    <div id="ResxTable"></div>
+</div>
+<svg class="pending-changes-sign" id="PendingChangesSign">
+    <rect width="100%" height="100%" fill="yellow"/>
+</svg>

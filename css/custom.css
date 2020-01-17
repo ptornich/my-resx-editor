@@ -1,0 +1,16 @@
+
+.btn-form {
+  margin-top: 5pt;
+}
+
+.btn-left {
+  margin-right: 10pt;
+}
+
+.pending-changes-sign {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:20px;
+  height: 0px;
+}
