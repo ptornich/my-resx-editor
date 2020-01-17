@@ -13,6 +13,8 @@ var resxDataPopulated = false
 var hasPendingChanges = false
 var showSyncNote = false
 
+folders = folders ? folders : []
+
 function formatXml(sourceXml)
 {
     var xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
@@ -136,7 +138,7 @@ function addFolder(folderPath) {
 function removeFolder(folderPath) {
     if(folders)
     {
-        folderIdx = getFolderIdx(folderPath)
+        var folderIdx = getFolderIdx(folderPath)
         folders.splice(folderIdx, 1);
         localStorage["folders"] = JSON.stringify(folders)
         if(selectedFolder && selectedFolder === folderPath){
@@ -152,6 +154,10 @@ function loadStartPage() {
 
 function loadFoldersPage() {
     $("#Container").load("folders.html", foldersPageReady)
+}
+
+function loadNoFoldersPage() {
+    $("#Container").load("nofolders.html", noFoldersPageReady)
 }
 
 function folderTableInit() {
@@ -193,7 +199,7 @@ function populateResxData() {
             console.error(err);
         }
         else if(dir){
-            requests = []
+            var requests = []
             dir.forEach(function(filePath){
                 var filePathArray = filePath.split(".")
                 var fileExt = filePathArray.pop()
@@ -236,7 +242,8 @@ function resxTableInit() {
         return;
     }
 
-    var newRecordFormHtml = `<input class="form-control new-record-field" id="NewRecord_Key" placeholder="Key" />`
+    var newRecordFormHtml = '<label for="NewRecord_Key">New Record</label>'
+    newRecordFormHtml += `<input class="form-control new-record-field" id="NewRecord_Key" placeholder="Key" />`
 
     var tableColumns = [
         {formatter:removeIcon, headerSort:false, width:40, align:"center", cellClick:function(e, cell){
@@ -250,6 +257,7 @@ function resxTableInit() {
         })
     
     newRecordFormHtml += '<button type="button" class="btn btn-primary btn-form" onclick="resxTableCreate()">Add record</button>'
+    newRecordFormHtml += '<hr>'
     $("#NewRecordForm").html(newRecordFormHtml);
 
     $('#ResxTable').tabulator({
@@ -371,7 +379,7 @@ function startPageReady() {
         $('#SelectFolder').append(new Option(folders[i].folder, i))
     }
     
-    if(!selectedFolder) {
+    if(folders.length && !folders.some(folder => (folder == selectedFolder))) {
         selectedFolder = folders[0].folder
         localStorage["selectedFolder"] = selectedFolder
     }
@@ -453,7 +461,6 @@ function foldersPageReady() {
     })
 
     $("#AddNewFolderButton").click(function () {
-        $("#FolderInput").value = "tst"
         $("#FolderInput").click()
     });
 
@@ -472,6 +479,30 @@ function foldersPageReady() {
     folderTableInit();    
 }
 
+function noFoldersPageReady() {
+    $("#AddNewFolderButton").click(function () {
+        $("#FolderInput").click()
+    });
+
+    $("#FolderInput").change(function(e){
+        try {
+            var folderPathArray = e.target.files[0].path.split(path.sep)
+            folderPathArray.pop()
+            addFolder(folderPathArray.join(path.sep))
+            loadStartPage();
+        }
+        catch (exception) {
+            console.error(exception);
+            showAlert('error-alert')
+        }
+    });
+}
+
 $(document).ready(function() { 
-    loadStartPage()
+    if(folders.length) {
+        loadStartPage()
+    }
+    else {
+        loadNoFoldersPage();
+    }
 });
