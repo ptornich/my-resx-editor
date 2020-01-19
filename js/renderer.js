@@ -11,7 +11,6 @@ var resxData = []
 var resxXmlDocs = {}
 var resxDataPopulated = false
 var hasPendingChanges = false
-var showSyncNote = false
 
 folders = folders ? folders : []
 
@@ -59,13 +58,16 @@ var removeIcon = function(cell, formatterParams, onRendered){
     return "<i class='fa fa-remove'></i>";
 };
 
+function hideAlert(alertId) {
+    $(`#${alertId}`).slideUp(1000)
+}
+
 function showAlert(alertId, sticky) {
     if(sticky) {
         $(`#${alertId}`).fadeTo(2000, 2000)
     }
     else {
-        $(`#${alertId}`).fadeTo(2000, 2000).slideUp(1000, function () {
-            $(`#${alertId}`).slideUp(1000)})
+        $(`#${alertId}`).fadeTo(2000, 2000).slideUp(1000, hideAlert)
     }
 }
 
@@ -142,7 +144,8 @@ function removeFolder(folderPath) {
         folders.splice(folderIdx, 1);
         localStorage["folders"] = JSON.stringify(folders)
         if(selectedFolder && selectedFolder === folderPath){
-            localStorage["selectedFolder"] = null
+            selectedFolder = null
+            localStorage["selectedFolder"] = selectedFolder
         }
         loadFoldersPage()
     }
@@ -361,7 +364,6 @@ function checkSyncResxKeys() {
         for(var i = 0; i < resxData.length; i++){ 
             appendChildToAllDocs(resxData[i])
         }
-        showSyncNote = true
         hasPendingChanges = true
         resxDataPopulated = false
         $("#SaveButton").click()    
@@ -379,11 +381,12 @@ function startPageReady() {
         $('#SelectFolder').append(new Option(folders[i].folder, i))
     }
     
-    if(folders.length && !folders.some(folder => (folder == selectedFolder))) {
+    if(folders.length && !folders.some(x => (x.folder == selectedFolder))) {
         selectedFolder = folders[0].folder
         localStorage["selectedFolder"] = selectedFolder
+        resxDataPopulated = false
     }
-    
+
     $('#SelectFolder').val(getFolderIdx(selectedFolder))
 
     $('#SelectFolder').change(function(e) {
@@ -426,13 +429,21 @@ function startPageReady() {
         return false;
     });
 
+    Mousetrap.bind(['f12'], function() {
+        ipcRenderer.send('openDevTools');
+        return false
+    })
+
     if(selectedFolder && !resxDataPopulated){
         populateResxData()   
     }
-    else if(!selectedFolder || (resxDataPopulated && !resxData)){
-        showAlert('no-resx-alert')
+    else if(!selectedFolder || (resxDataPopulated && !resxData.length)){
+        showAlert('no-resx-alert', true)
+        $("ResxGroup").css("display", "none")
     }
-    else if (selectedFolder && resxDataPopulated && resxData){
+    else if (selectedFolder && resxDataPopulated && resxData.length){
+        hideAlert('no-resx-alert')
+        $("#ResxGroup").css("display", "inherit")
         checkSyncResxKeys()
         resxTableInit()
     }
@@ -444,10 +455,6 @@ function startPageReady() {
         }
     })
 
-    if(showSyncNote) {
-        showAlert("designer-cs-alert", true)
-    }
-
     if(hasPendingChanges) {
         hasPendingChanges = false
         enableSaveButtons(true)
@@ -457,7 +464,12 @@ function startPageReady() {
 function foldersPageReady() {
     
     $('#BackButton').click(function() {
-        loadStartPage()
+        if(folders.length) {
+            loadStartPage()
+        }
+        else {
+            loadNoFoldersPage();
+        }
     })
 
     $("#AddNewFolderButton").click(function () {

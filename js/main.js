@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -6,12 +6,12 @@ let win
 
 function createWindow () {
     win = new BrowserWindow({
-        height:700,
-        width:1024,
         webPreferences: {
             nodeIntegration: true
         }
     })
+
+    win.maximize()
 
     // and load the index.html of the app.
     win.loadFile('html/index.html')
@@ -22,7 +22,7 @@ function createWindow () {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         win = null
-    })
+    })    
 }
 
 // This method will be called when Electron has finished
@@ -46,6 +46,11 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+ipcMain.on('openDevTools', () => {
+    win.webContents.openDevTools()
+});
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

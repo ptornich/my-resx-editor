@@ -9,25 +9,15 @@
         </select>
         <button type="button" class="btn btn-info" id="ManageFoldersButton">Manage folders</button>
     </div>
-    <div class="alert alert-error" role="alert" id="error-alert" style="display: none;">
-        Unhandled exception. Please check the console log for more information.
-    </div>
-    <div class="alert alert-error" role="alert" id="no-resx-alert" style="display: none;">
-        No .resx files found in the selected folder.
-    </div>
-    <div class="alert" role="alert" id="designer-cs-alert" style="display: none;">
-        <br/>
-        <strong>
-            IMPORTANT:<br/>
-            We reformatted your .resx files.<br/>
-            So if you have any troubles with your .Designer.cs files, please recreate them.<br/>
-            To regenerate the files go to Visual Studio, then in each .resx file<br/>
-            change something and save the file, VS will recreate the .Designer.cs files for you.
-        </strong>
-    </div>
 </form>
+<div class="alert alert-error" role="alert" id="error-alert" style="display: none;">
+    <br/>Unhandled exception. Please check the console log for more information.
+</div>
+<div class="alert alert-error" role="alert" id="no-resx-alert" style="display: none;">
+    <br/>No .resx files found in the selected folder.
+</div>
 <br/>
-<div id="ResxGroup">
+<div id="ResxGroup" style="display: none;">
     <form id="NewRecordForm" class="form"></form>
     <div class="alert alert-error" role="alert" id="empty-key-alert" style="display: none;">
         Key field cannot be empty.
@@ -43,6 +33,15 @@
     </form>
     <br/>
     <div id="ResxTable"></div>
+    <div class="alert" role="alert" id="designer-cs-alert" style="display: none;">
+        <br/>
+        <strong>
+            NOTE:<br/>
+            If you have any troubles with your .Designer.cs files, just recreate them.<br/>
+            To regenerate the files go to Visual Studio, then in each .resx file<br/>
+            change something and save the file, VS will recreate the .Designer.cs files for you.
+        </strong>
+    </div>
 </div>
 <svg class="pending-changes-sign" id="PendingChangesSign">
     <rect width="100%" height="100%" fill="yellow"/>
