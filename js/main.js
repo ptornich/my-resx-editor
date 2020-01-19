@@ -6,6 +6,7 @@ let win
 
 function createWindow () {
     win = new BrowserWindow({
+        title: "Electron Resx Editor",
         webPreferences: {
             nodeIntegration: true
         }

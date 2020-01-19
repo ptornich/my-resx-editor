@@ -1,3 +1,4 @@
+const { ipcRenderer } = require('electron')
 const path = require('path');
 const fs = require('fs');
 var $ = require('jquery');
@@ -198,10 +199,8 @@ function populateResxData() {
     }
     resxData = []
     fs.readdir(selectedFolder, function(err, dir) {
-        if(err){
-            console.error(err);
-        }
-        else if(dir){
+        if (err) throw err;
+        if (dir) {
             var requests = []
             dir.forEach(function(filePath){
                 var filePathArray = filePath.split(".")
@@ -209,19 +208,15 @@ function populateResxData() {
                 if(fileExt === "resx"){
                     var fullFilePath = path.join(selectedFolder, filePath)
                     requests.push(
-                        $.ajax({
-                            type: "GET",
-                            url: fullFilePath,
-                            dataType: "xml",
-                            success: function(xml) {
-                                let xmlKey = filePathArray.join("_")
-                                resxXmlDocs[xmlKey] = {xml:xml, filePath:fullFilePath}
-                                $(xml).find('data').each(function() {
-                                    var key = $(this).attr('name')
-                                    var value = $(this).find('value').text()
-                                    resxDataAddOrUpdate(key, value, xmlKey)
-                                })
-                            }
+                        fs.readFile(fullFilePath, 'utf8', (err, data) => {
+                            if (err) throw err;
+                            var xml = $.parseXML(data)
+                            var xmlKey = filePathArray.join("_")
+                            resxXmlDocs[xmlKey] = {xml:xml, filePath:fullFilePath}
+                            $(xml).find('data').each(function() {
+                                var key = $(this).attr('name')
+                                var value = $(this).find('value').text()
+                                resxDataAddOrUpdate(key, value, xmlKey)})
                         }))
                 }
             })
@@ -306,6 +301,7 @@ function resxTableCreate() {
         else {
             resxObj[field.id.replace(fieldPrefix, "")] = field.value
         }
+        field.value = ""
     })
     $("#ResxTable").tabulator("addRow", resxObj, true);
 
@@ -424,16 +420,6 @@ function startPageReady() {
         loadStartPage()
     })
 
-    Mousetrap.bind(['command+s', 'ctrl+s'], function() {
-        $('#SaveButton').click()
-        return false;
-    });
-
-    Mousetrap.bind(['f12'], function() {
-        ipcRenderer.send('openDevTools');
-        return false
-    })
-
     if(selectedFolder && !resxDataPopulated){
         populateResxData()   
     }
@@ -511,6 +497,16 @@ function noFoldersPageReady() {
 }
 
 $(document).ready(function() { 
+    Mousetrap.bind(['command+s', 'ctrl+s'], function() {
+        $('#SaveButton').click()
+        return false;
+    });
+
+    Mousetrap.bind(['f12'], function() {
+        ipcRenderer.send('openDevTools');
+        return false
+    })
+
     if(folders.length) {
         loadStartPage()
     }

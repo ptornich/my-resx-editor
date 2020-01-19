@@ -1,5 +1,5 @@
 {
-  "name": "electronresxeditor",
+  "name": "electron-resx-editor",
   "version": "1.0.0",
   "description": "Edit .resx files with ease in any platform",
   "main": "js/main.js",
@@ -50,7 +50,7 @@
         "packageManager": "npm"
       },
       "electronWinstallerConfig": {
-        "name": "electronresxeditor"
+        "name": "ElectronResxEditor"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -59,8 +59,8 @@
         "name": ""
       },
       "windowsStoreConfig": {
-        "packageName": "",
-        "name": "electronresxeditor"
+        "packageName": "ElectronResxEditor",
+        "name": "ElectronResxEditor"
       }
     }
   }
