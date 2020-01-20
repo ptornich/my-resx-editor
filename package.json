@@ -1,6 +1,6 @@
 {
-  "name": "electron-resx-editor",
-  "version": "1.0.0",
+  "name": "my-resx-editor",
+  "version": "1.0",
   "description": "Edit .resx files with ease in any platform",
   "main": "js/main.js",
   "scripts": {
@@ -47,10 +47,11 @@
         ]
       },
       "electronPackagerConfig": {
-        "packageManager": "npm"
+        "packageManager": "npm",
+        "icon": "img/icon.icns"
       },
       "electronWinstallerConfig": {
-        "name": "ElectronResxEditor"
+        "name": "MyResxEditor"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -59,8 +60,8 @@
         "name": ""
       },
       "windowsStoreConfig": {
-        "packageName": "ElectronResxEditor",
-        "name": "ElectronResxEditor"
+        "packageName": "MyResxEditor",
+        "name": "MyResxEditor"
       }
     }
   }

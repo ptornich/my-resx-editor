@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+const { shell, ipcRenderer } = require('electron')
 const path = require('path');
 const fs = require('fs');
 var $ = require('jquery');
@@ -497,6 +497,12 @@ function noFoldersPageReady() {
 }
 
 $(document).ready(function() { 
+    
+    $('.open-in-browser').click((event) => {
+            event.preventDefault();
+            shell.openExternal(event.target.href);
+    }); 
+
     Mousetrap.bind(['command+s', 'ctrl+s'], function() {
         $('#SaveButton').click()
         return false;
