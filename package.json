@@ -1,6 +1,6 @@
 {
   "name": "my-resx-editor",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Edit .resx files with ease in any platform",
   "main": "js/main.js",
   "scripts": {
