@@ -32,6 +32,10 @@ function createWindow () {
         submenu: [
             { label: `About ${appTitle}`, selector: "orderFrontStandardAboutPanel:" },
             { type: "separator" },
+            { label: `Hide ${appTitle}`, accelerator: "Command+h", selector: "hide:" },
+            { label: 'Hide Others', accelerator: "Command+alt+h", selector: "hideOtherApplications:" },
+            { label: 'Show All', selector: "unhideAllApplications:" },
+            { type: "separator" },
             { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
         ]}, {
         label: "Edit",
